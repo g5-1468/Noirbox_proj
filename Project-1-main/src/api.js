@@ -2,7 +2,10 @@
  * Client for the NOIRBOX Java API (java-app, run with serve.bat).
  * All movie, show, seat, booking and review data lives in MySQL.
  */
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
+// Local dev talks to the Java API on :8080; the hosted build (hosted/worker.js)
+// serves the same endpoints on the same origin as the page.
+const API_BASE = import.meta.env.VITE_API_URL
+  || (import.meta.env.DEV ? 'http://localhost:8080/api' : '/api')
 
 export class ApiError extends Error {
   constructor(message, status) {

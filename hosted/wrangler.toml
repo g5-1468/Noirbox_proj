@@ -1,0 +1,14 @@
+name = "noirbox"
+main = "worker.js"
+compatibility_date = "2025-11-18"
+
+# Static React build (Project-1-main/dist copied to hosted/public)
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# Local D1 database used by `wrangler dev` (created on first run).
+[[d1_databases]]
+binding = "DB"
+database_name = "noirbox"
+database_id = "00000000-0000-0000-0000-000000000000"

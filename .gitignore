@@ -33,3 +33,7 @@ desktop.ini
 # Project-specific generated / disposable files
 java-app/sources.txt
 reports/
+
+# hosted build output + local wrangler state
+hosted/public/
+hosted/.wrangler/

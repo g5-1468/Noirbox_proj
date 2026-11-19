@@ -1,9 +1,13 @@
 # NOIRBOX — Cinema Ticket Booking (React + Java + MySQL)
 
-### ▶ [Open the website](http://localhost:5173)
+### ▶ [Open the website](https://noirbox-cinema-g6br4p.freebuff.site)
 
-> The website runs on your own machine: start the Java API (`java-app/serve.bat`) and the
-> frontend (`npm run dev`) first, then this link opens it at **http://localhost:5173**.
+**Live and public — it opens on any device, no setup needed:**
+<https://noirbox-cinema-g6br4p.freebuff.site>
+
+The hosted build (`hosted/`) serves the same React app and the same REST API from a
+Cloudflare Worker, with SQLite (D1) standing in for MySQL. The original MySQL + JDBC
+version below still runs locally exactly as before.
 
 One project, two subjects:
 
@@ -48,7 +52,17 @@ Listens on **http://localhost:8080/api** — check `http://localhost:8080/api/he
 cd D:\noirbox_proj
 npm run dev
 ```
-Open the URL Vite prints (usually http://localhost:5173).
+Open **http://localhost:5173** (the port is pinned in `Project-1-main/vite.config.js`).
+
+### Hosted version (no MySQL needed)
+
+```powershell
+cd D:\noirbox_proj\Project-1-main; npm run build
+cd ..; rm -rf hosted/public; cp -r Project-1-main/dist hosted/public
+cd hosted; npx wrangler dev        # http://localhost:8787
+```
+`hosted/worker.js` implements every endpoint of the Java API on D1 and seeds the
+sample data on first request, so the public site needs no database server.
 
 ### Console version (for the Java viva)
 
