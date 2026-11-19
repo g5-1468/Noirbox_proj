@@ -1,3 +1,28 @@
+## Fresh clone setup
+
+On a fresh clone, two things are usually missing and must be set up before the app runs:
+
+1. **MySQL JDBC driver** — `lib/mysql-connector-j-8.4.0.jar` is not committed to the repo. Download the same 8.x version and put it in `lib/`:
+
+   - https://dev.mysql.com/downloads/connector/j/
+   - choose **Platform Independent** → ZIP → copy the `.jar` into `java-app/lib/`
+
+   The app will not start without it. The placeholder file `lib/PUT_MYSQL_CONNECTOR_JAR_HERE.txt` stays in the repo so this is easy to spot.
+
+2. **Database password** — `config/db.properties` is in the repo, but only as a template:
+
+   ```
+   db.url=jdbc:mysql://localhost:3306/noirbox_db
+   db.user=root
+   db.password=YOUR_PASSWORD_HERE
+   ```
+
+   Set `db.password` to your MySQL password before running anything. On this machine that is currently `root`.
+
+Then run `run.bat` or `serve.bat` as normal.
+
+---
+
 # java-app — NOIRBOX Java + JDBC application
 
 Two entry points over the same code:
