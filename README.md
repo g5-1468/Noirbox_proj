@@ -130,6 +130,21 @@ git config core.hooksPath .githooks
 
 After that a normal `git add -A && git commit -m "..."` also updates GitHub.
 
+### If you work from a fork
+
+The repo has three forks (`g5-0405`, `g5-0135`, `bhavesh08-k`). Forks never update on
+their own, so bring yours level with the upstream `main` and push it back:
+
+```bash
+git remote add upstream https://github.com/g5-1468/Noirbox_proj.git   # once per clone
+git fetch upstream
+git merge --ff-only upstream/main
+git push
+```
+
+Or press **Sync fork → Update branch** on your fork's GitHub page. Every collaborator
+then has the same code, the same live URL and the same live database.
+
 ## Subject deliverables
 
 ### DBMS (24CSE0209)
