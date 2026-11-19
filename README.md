@@ -1,5 +1,10 @@
 # NOIRBOX — Cinema Ticket Booking (React + Java + MySQL)
 
+### ▶ [Open the website](http://localhost:5173)
+
+> The website runs on your own machine: start the Java API (`java-app/serve.bat`) and the
+> frontend (`npm run dev`) first, then this link opens it at **http://localhost:5173**.
+
 One project, two subjects:
 
 | Part | Subject | Where |

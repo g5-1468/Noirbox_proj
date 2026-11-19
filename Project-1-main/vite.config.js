@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  // Fixed port so the repo's website link (http://localhost:5173) always opens this app.
+  server: {
+    port: 5173,
+    strictPort: true
+  },
+  preview: {
+    port: 5173,
+    strictPort: true
+  }
 })
