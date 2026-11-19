@@ -34,7 +34,7 @@ export default function Footer() {
         </p>
       </div>
       <p className="container muted" style={{ marginTop: 24, fontSize: 12 }}>
-        © {new Date().getFullYear()} NOIRBOX. Live booking data served from MySQL through the Java API.
+        © {new Date().getFullYear()} NOIRBOX. Live booking data served from a real database.
       </p>
     </footer>
   )
