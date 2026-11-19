@@ -16,7 +16,7 @@ export default function Layout() {
         </div>
       ) : (
         <div className="demo-banner">
-          Live booking system — movies, seats, bookings and reviews are stored in MySQL through the Java API.
+          Live booking system — movies, seats, bookings and reviews come from a real database, never mock data.
         </div>
       )}
       <Navbar />
