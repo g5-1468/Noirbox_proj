@@ -1,0 +1,56 @@
+package noirbox.model;
+
+/** A customer of the application. */
+public class User {
+
+    private int userId;
+    private String fullName;
+    private String email;
+    private String phone;
+
+    public User() {
+    }
+
+    public User(String fullName, String email, String phone) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s <%s>", fullName, email);
+    }
+}

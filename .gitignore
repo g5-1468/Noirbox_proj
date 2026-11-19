@@ -1,0 +1,35 @@
+# Build artifacts (regenerate, don't commit)
+node_modules/
+dist/
+dist-ssr/
+out/
+*.class
+*.jar
+
+# MySQL connector JAR (keep lib/, but not the binary jar in a public repo)
+java-app/lib/*.jar
+
+# Secrets / env (real credentials never go in the repo)
+.env
+.env.*
+!.env.example
+java-app/config/db.properties
+
+# IDE / OS junk
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local metadata / logs (not part of the project)
+.freebuff
+.fb
+.cloud-attachments
+*.log
+
+# Project-specific generated / disposable files
+java-app/sources.txt
+reports/

@@ -1,0 +1,12 @@
+The MySQL JDBC driver is already in this folder:
+
+    mysql-connector-j-8.4.0.jar
+
+If the file is missing (for example after a fresh clone), download the same
+version and copy it here:
+
+    https://dev.mysql.com/downloads/connector/j/
+    -> "Platform Independent" -> ZIP archive -> inside it is the .jar
+
+Any 8.x version works. The run.bat / run.sh scripts add every jar in this
+folder to the classpath automatically (lib/*), so no command has to change.

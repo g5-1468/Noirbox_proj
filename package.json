@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix ./Project-1-main run dev"
+  }
+}
