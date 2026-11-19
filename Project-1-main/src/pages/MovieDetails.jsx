@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import Button from '../components/Button'
@@ -6,8 +6,12 @@ import EmptyState, { Loader } from '../components/EmptyState'
 import MovieReviewsSection from '../components/Reviews/MovieReviewsSection'
 import { useApp } from '../context/AppContext'
 import { getTheatreById } from '../data/theatres'
+import usePolling from '../hooks/usePolling'
 import { formatDuration } from '../utils/bookingUtils'
 import { calculateMovieVerdict } from '../utils/storage'
+
+// Keep the verdict chip above in step with reviews written on other devices.
+const REVIEW_REFRESH_MS = 15000
 
 export default function MovieDetails() {
   const { movieId } = useParams()
@@ -19,11 +23,24 @@ export default function MovieDetails() {
   const [reviews, setReviews] = useState([])
   const [cityShows, setCityShows] = useState([])
 
+  const loadReviews = useCallback(() => {
+    if (!movie?.id) return
+    api
+      .reviews(movie.id)
+      .then(setReviews)
+      .catch(() => {})
+  }, [movie?.id])
+
+  useEffect(() => {
+    loadReviews()
+  }, [loadReviews])
+
+  usePolling(loadReviews, REVIEW_REFRESH_MS)
+
   useEffect(() => {
     let active = true
     if (!movie) return undefined
 
-    api.reviews(movie.id).then((list) => active && setReviews(list)).catch(() => {})
     api
       .shows({ movieId: movie.id, city })
       .then((list) => active && setCityShows(list))

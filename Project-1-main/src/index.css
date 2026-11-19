@@ -1549,3 +1549,33 @@ select {
     color: black;
   }
 }
+
+/* Live-update hints (seat map + reviews refresh from the database on their own) */
+.live-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #37d67a;
+  box-shadow: 0 0 0 0 rgba(55, 214, 122, 0.55);
+  animation: live-pulse 2.2s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(55, 214, 122, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(55, 214, 122, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(55, 214, 122, 0);
+  }
+}

@@ -1,0 +1,19 @@
+#!/bin/sh
+# NOIRBOX: keep the GitHub repository in step with every commit made in this clone.
+# Enable once per clone with:  git config core.hooksPath .githooks
+#
+# After each commit the current branch is pushed to origin, so collaborators who
+# pull get exactly the same code without waiting for a manual push.
+
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ -z "$branch" ] || ! git remote get-url origin >/dev/null 2>&1; then
+  exit 0
+fi
+
+if git push --quiet origin "HEAD:refs/heads/$branch" 2>/dev/null; then
+  echo "noirbox: pushed $branch to origin ($(git rev-parse --short HEAD))"
+else
+  echo "noirbox: could not push $branch to origin - run 'git push' when you are back online" >&2
+fi
+
+exit 0

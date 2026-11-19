@@ -86,6 +86,12 @@ cd D:\noirbox_proj\java-app
   (seats are released by the `AFTER DELETE` trigger).
 - Reviews are stored in `review` / `review_tag`; the trigger derives the verdict,
   and "Helpful" votes increment `review.likes`.
+- **Live across devices**, the way BookMyShow behaves: reviews, helpful votes and
+  booked seats are shared server-side, and the pages re-read them on their own —
+  a review written on one phone shows up on the others within ~10 seconds, and a
+  seat booked elsewhere turns occupied within ~5 seconds, no reload needed.
+- If someone takes a seat you had already picked, it is dropped from your selection
+  with a message, so you never pay for an unavailable seat.
 
 ### API endpoints
 
@@ -111,6 +117,18 @@ Browser requests are form-encoded, so the Java side needs no JSON library
 (`noirbox/api/Json.java` only writes JSON).
 
 ---
+
+## Keeping the GitHub repo in step
+
+The `post-commit` hook in `.githooks/` pushes every commit to
+<https://github.com/g5-1468/Noirbox_proj>, so other contributors get the same code
+by pulling. Enable it once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+After that a normal `git add -A && git commit -m "..."` also updates GitHub.
 
 ## Subject deliverables
 

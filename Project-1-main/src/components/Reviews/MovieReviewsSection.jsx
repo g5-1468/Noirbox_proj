@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api } from '../../api'
 import { useApp } from '../../context/AppContext'
+import usePolling from '../../hooks/usePolling'
 import Button from '../Button'
 import ReviewCard from './ReviewCard'
 import WriteReviewModal from './WriteReviewModal'
+
+// Reviews written on other devices should appear here on their own.
+const REVIEW_REFRESH_MS = 10000
 
 export default function MovieReviewsSection({ movie }) {
   const { user, setLoginModalOpen } = useApp()
@@ -26,6 +30,8 @@ export default function MovieReviewsSection({ movie }) {
   useEffect(() => {
     loadReviews()
   }, [loadReviews])
+
+  usePolling(loadReviews, REVIEW_REFRESH_MS)
 
   const verdictData = useMemo(() => {
     const totalCount = reviews.length
@@ -137,6 +143,10 @@ export default function MovieReviewsSection({ movie }) {
           <h2 className="section-title">Should You Watch This?</h2>
           <p className="muted">
             Aggregated audience verdict and honest reviews from verified movie-goers.
+          </p>
+          <p className="muted live-hint">
+            <span className="live-dot" aria-hidden="true" />
+            Live reviews — new reviews and helpful votes from other devices appear here automatically.
           </p>
         </div>
 

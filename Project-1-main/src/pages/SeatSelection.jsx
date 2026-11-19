@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../api'
 import BookingSummary from '../components/BookingSummary'
@@ -7,7 +7,12 @@ import EmptyState, { Loader } from '../components/EmptyState'
 import SeatMap from '../components/SeatMap'
 import { useApp } from '../context/AppContext'
 import { getTheatreById } from '../data/theatres'
+import usePolling from '../hooks/usePolling'
 import { priceBreakdown } from '../utils/bookingUtils'
+
+// Other people hold tickets on their own devices; ask the server again often
+// enough that their bookings show up here without a reload.
+const SEAT_REFRESH_MS = 5000
 
 export default function SeatSelection() {
   const { showId } = useParams()
@@ -18,8 +23,9 @@ export default function SeatSelection() {
   const [seatData, setSeatData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
 
-  // Live show details + seats already booked in MySQL.
+  // First load: show details + the seats already booked in the database.
   useEffect(() => {
     let active = true
     setLoading(true)
@@ -43,6 +49,18 @@ export default function SeatSelection() {
     }
   }, [showId])
 
+  // Live seat map: refresh quietly, keeping the last good answer on failure.
+  const refreshSeats = useCallback(
+    () =>
+      api
+        .seats(showId)
+        .then((seats) => setSeatData(seats))
+        .catch(() => {}),
+    [showId],
+  )
+
+  usePolling(refreshSeats, SEAT_REFRESH_MS)
+
   useEffect(() => {
     if (!show) return
     if (draft.showId !== show.id) {
@@ -55,6 +73,27 @@ export default function SeatSelection() {
       })
     }
   }, [show, draft.showId, updateDraft])
+
+  // If another device books a seat we had picked, drop it from the selection.
+  useEffect(() => {
+    if (!seatData || draft.showId !== showId) return
+    const booked = new Set(seatData.booked || [])
+    const taken = (draft.seats || []).filter((seat) => booked.has(seat))
+    if (taken.length === 0) return
+
+    updateDraft({ seats: (draft.seats || []).filter((seat) => !booked.has(seat)) })
+    setNotice(
+      `${taken.join(', ')} ${taken.length === 1 ? 'was' : 'were'} just booked on another device. Please pick ${
+        taken.length === 1 ? 'another seat' : 'other seats'
+      }.`,
+    )
+  }, [seatData, draft.showId, draft.seats, showId, updateDraft])
+
+  useEffect(() => {
+    if (!notice) return undefined
+    const timer = window.setTimeout(() => setNotice(''), 8000)
+    return () => window.clearTimeout(timer)
+  }, [notice])
 
   const occupied = useMemo(
     () => new Set(seatData?.booked ?? []),
@@ -110,6 +149,11 @@ export default function SeatSelection() {
         {seatData.price.premium} · Executive {seatData.price.executive} · Normal{' '}
         {seatData.price.normal}
       </p>
+      <p className="muted live-hint">
+        <span className="live-dot" aria-hidden="true" />
+        Live seat map — seats booked on other devices turn occupied here automatically.
+      </p>
+      {notice ? <p className="error">{notice}</p> : null}
       <div className="seat-layout">
         <div className="panel">
           <SeatMap occupied={occupied} selected={selected} onToggle={toggle} />
